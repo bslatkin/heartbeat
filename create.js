@@ -14,9 +14,10 @@
  */
 
 var CLIENT_ID = 'Afwhh8J6d35WzUnVvSLPrc5KgY2aMhpy';
+var AUTH_TOKEN = '';
 
 
-function init() {
+function authorize() {
     var prefix = '#access_token=';
     if (window.location.hash.indexOf(prefix) != 0) {
         var href = 'https://account.app.net/oauth/authenticate' +
@@ -28,9 +29,50 @@ function init() {
         return;
     }
     var token = window.location.hash.substr(prefix.length);
-    console.log('Got the code! ' + token);
+    console.log('Client authorized: ' + token);
+    return token;
 }
 
+
+function flattenForm(formEl) {
+    var result = {};
+    $.each($(formEl).serializeArray(), function(i, v) {
+        result[v['name']] = v['value'];
+    });
+    return result;
+}
+
+
+function handleCreate(e) {
+    e.preventDefault();
+    var params = flattenForm(e.target);
+    console.log(params);
+    // TODO: Query to see if the channel is already alive.
+
+    $.ajax({
+        type: 'POST',
+        url: 'https://alpha-api.app.net/stream/0/channels',
+        data: {
+            type: 'net.app.timeseries',
+            writers: {
+                any_user: true
+            },
+            readers: {
+                you: true
+            }
+        },
+        xhrFields: {
+            withCredentials: true
+        }
+    }).done(function(result) {
+        console.log(result);
+    });
+}
+
+
+function init() {
+    $('#create-form').submit(handleCreate);
+}
 
 
 $(document).ready(init);
