@@ -17,10 +17,12 @@
 var SHIM_TOKEN = 'AQAAAAAAAwFkk0rZQDtoHq82UEpOAk0tCWCgE02-GovtrS_KSx2AN_86oMtWYAK5sGIuIsKG1jrehToqEuuz7UX7jNQh8ZtqvA';
 
 
-function sendMessage(channelId, point, opt_token, opt_success) {
+function sendMessage(channelId, point, opt_token, opt_success, opt_sync) {
     opt_token = opt_token || SHIM_TOKEN;
+    console.log('Sending: ' + JSON.stringify(point));
     var xhr = $.ajax({
         type: 'POST',
+        async: !opt_sync,
         url: 'https://alpha-api.app.net/stream/0/channels/' +
              channelId + '/messages',
         headers: {
