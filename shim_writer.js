@@ -13,6 +13,21 @@
  * limitations under the License.
  */
 
-// Token of the shim user, created with shim_writer.html
-var SHIM_TOKEN = 'AQAAAAAAAwFkk0rZQDtoHq82UEpOAk0tCWCgE02-GovtrS_KSx2AN_86oMtWYAK5sGIuIsKG1jrehToqEuuz7UX7jNQh8ZtqvA';
 
+function handleCreate(e) {
+    e.preventDefault();
+
+    if (!authorized()) {
+        return;
+    }
+
+    $('#snippet').text('Auth token: ' + AUTH_TOKEN);
+}
+
+
+function init() {
+    $('#shim-form').submit(handleCreate);
+}
+
+
+$(document).ready(init);

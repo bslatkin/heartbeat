@@ -1,0 +1,28 @@
+<!doctype>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Initialize the shim writer</title>
+        <script src="jquery-1.9.1.min.js"></script>
+    </head>
+<body>
+
+<h1>Create the shim user token</h1>
+<p>
+Do this in an incognito window.
+</p>
+<p>
+This will prompt you to authorize the Heartbeat app to send messages on behalf of your shim user account. The shim account is a throw-away app.net account that will have permission to write to your timeseries channels and nothing more. This makes it so we can push data to time series without requiring users to login with their app.net credentials.
+</p>
+
+<form id="shim-form">
+    <p>
+    <input type="submit" value="Authorize">
+</form>
+
+<div id="snippet"></div>
+
+<script src="auth.js"></script>
+<script src="shim_writer.js"></script>
+</body>
+</html>
