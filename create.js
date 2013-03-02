@@ -16,6 +16,7 @@
 
 function handleCreateSuccess(result) {
     console.log(result);
+    $('#snippet').text('Created channel ID: ' + result.data.id);
 }
 
 

@@ -105,6 +105,9 @@ function handleSend(e) {
 }
 
 
+
+
+
 function init() {
     $('#send-form').submit(handleSend);
 }
