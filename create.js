@@ -46,6 +46,8 @@ function handleCreate(e) {
                 any_user: true
             },
             readers: {
+                // TODO: Remove this and make the channel private
+                any_user: true,
                 you: true
             }
         }),
