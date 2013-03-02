@@ -23,6 +23,30 @@ function flattenForm(formEl) {
 }
 
 
+function handleGetMessagesSuccess(result) {
+    console.log(result);
+    var dataPoints = $('#data-points');
+    dataPoints.empty();
+    $.each(result.data, function(i, d) {
+        for (var i = 0, n = d.annotations.length; i < n; i++) {
+            var point = d.annotations[i];
+            if (point.type == 'net.app.contrib.timeseries') {
+                $('<div class="point">')
+                    .append(
+                        $('<span class="stamp">')
+                            .text(d.created_at))
+                    .append(' ')
+                    .append(
+                        $('<span class="payload">')
+                            .text(JSON.stringify(point.value)))
+                    .appendTo(dataPoints);
+                return;
+            }
+        }
+    });
+}
+
+
 function getMessages(channelId) {
     console.log('Fetching channel: ' + channelId);
     $.ajax({
@@ -37,28 +61,8 @@ function getMessages(channelId) {
             'Authorization': 'Bearer ' + AUTH_TOKEN
         }
     })
-    .done(function(result) {
-        console.log(result);
-        var dataPoints = $('#data-points');
-        dataPoints.empty();
-        $.each(result.data, function(i, d) {
-            for (var i = 0, n = d.annotations.length; i < n; i++) {
-                var point = d.annotations[i];
-                if (point.type == 'net.app.contrib.timeseries') {
-                    $('<div class="point">')
-                        .append(
-                            $('<span class="stamp">')
-                                .text(d.created_at))
-                        .append(' ')
-                        .append(
-                            $('<span class="payload">')
-                                .text(JSON.stringify(point.value)))
-                        .appendTo(dataPoints);
-                    return;
-                }
-            }
-        });
-    });
+    .done(handleGetMessagesSuccess);
+    // TODO: Handle errors
 }
 
 
@@ -68,25 +72,18 @@ function handleSendSuccess(result) {
 }
 
 
-function handleSend(e) {
-    e.preventDefault();
-
-    if (!authorized()) {
-        return;
-    }
-
-    var params = flattenForm(e.target);
+function sendMessage(channelId) {
     $.ajax({
         type: 'POST',
         url: 'https://alpha-api.app.net/stream/0/channels/' +
-             params.channelId + '/messages',
+             channelId + '/messages',
         // TODO: Remove the need for an auth token so we can have anonymous
         // datapoints pushed through.
         headers: {
             'Authorization': 'Bearer ' + AUTH_TOKEN
         },
         data: JSON.stringify({
-            channel_id: params.channelId,
+            channel_id: channelId,
             created_at: (new Date()).toISOString(),  // requires ecma5
             machine_only: true,
             annotations: [
@@ -105,11 +102,29 @@ function handleSend(e) {
 }
 
 
+function handleSend(e) {
+    e.preventDefault();
+    if (!authorized()) {
+        return;
+    }
+    var params = flattenForm($('#send-form'));
+    sendMessage(params.channelId);
+}
 
+
+function handleView(e) {
+    e.preventDefault();
+    if (!authorized()) {
+        return;
+    }
+    var params = flattenForm($('#send-form'));
+    getMessages(params.channelId);
+}
 
 
 function init() {
-    $('#send-form').submit(handleSend);
+    $('#send-button').click(handleSend);
+    $('#view-button').click(handleView);
 }
 
 
