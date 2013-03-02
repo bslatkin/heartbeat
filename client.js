@@ -72,7 +72,7 @@ function handleSendSuccess(result) {
 }
 
 
-function sendMessage(channelId) {
+function sendMessage(channelId, point) {
     $.ajax({
         type: 'POST',
         url: 'https://alpha-api.app.net/stream/0/channels/' +
@@ -89,9 +89,7 @@ function sendMessage(channelId) {
             annotations: [
                 {
                     type: 'net.app.contrib.timeseries',
-                    value: {
-                        n: 123
-                    }
+                    value: point
                 }
             ]
         }),
@@ -108,7 +106,10 @@ function handleSend(e) {
         return;
     }
     var params = flattenForm($('#send-form'));
-    sendMessage(params.channelId);
+    sendMessage(params.channelId, {
+        n: 10 * (1 + Math.sin(2 * Math.PI *
+                              ((new Date()).getTime() % 60000) / 60000.0)) / 2
+    });
 }
 
 
