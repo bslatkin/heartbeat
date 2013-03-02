@@ -35,15 +35,6 @@ function authorized() {
 }
 
 
-function flattenForm(formEl) {
-    var result = {};
-    $.each($(formEl).serializeArray(), function(i, v) {
-        result[v['name']] = v['value'];
-    });
-    return result;
-}
-
-
 function handleCreateSuccess(result) {
     console.log(result);
 }
@@ -55,7 +46,6 @@ function handleCreate(e) {
     }
 
     e.preventDefault();
-    var params = flattenForm(e.target);
     $.ajax({
         type: 'POST',
         url: 'https://alpha-api.app.net/stream/0/channels',

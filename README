@@ -14,8 +14,9 @@ Time series format:
         ...
     },
     c: 'hello',        // ID of the client that is the data source
-    s: 555,            // Sequence number of the message from the client (?)
 }
+
+Numerator is required. Everything else is optional.
 
 
 About multi-dimensional labels:
