@@ -16,3 +16,31 @@
 // Token of the shim user, created with shim_writer.html
 var SHIM_TOKEN = 'AQAAAAAAAwFkk0rZQDtoHq82UEpOAk0tCWCgE02-GovtrS_KSx2AN_86oMtWYAK5sGIuIsKG1jrehToqEuuz7UX7jNQh8ZtqvA';
 
+
+function sendMessage(channelId, point, opt_token, opt_success) {
+    opt_token = opt_token || SHIM_TOKEN;
+    var xhr = $.ajax({
+        type: 'POST',
+        url: 'https://alpha-api.app.net/stream/0/channels/' +
+             channelId + '/messages',
+        headers: {
+            'Authorization': 'Bearer ' + opt_token
+        },
+        data: JSON.stringify({
+            channel_id: channelId,
+            created_at: (new Date()).toISOString(),  // requires ecma5
+            machine_only: true,
+            annotations: [
+                {
+                    type: 'net.app.contrib.timeseries',
+                    value: point
+                }
+            ]
+        }),
+        contentType: 'application/json'
+    });
+    if (opt_success) {
+        xhr.done(opt_success);
+        // TODO: Handle errors
+    }
+}

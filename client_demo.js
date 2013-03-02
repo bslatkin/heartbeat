@@ -72,44 +72,20 @@ function handleSendSuccess(result) {
 }
 
 
-function sendMessage(channelId, point) {
-    $.ajax({
-        type: 'POST',
-        url: 'https://alpha-api.app.net/stream/0/channels/' +
-             channelId + '/messages',
-        // TODO: Remove the need for an auth token so we can have anonymous
-        // datapoints pushed through.
-        headers: {
-            'Authorization': 'Bearer ' + AUTH_TOKEN
-        },
-        data: JSON.stringify({
-            channel_id: channelId,
-            created_at: (new Date()).toISOString(),  // requires ecma5
-            machine_only: true,
-            annotations: [
-                {
-                    type: 'net.app.contrib.timeseries',
-                    value: point
-                }
-            ]
-        }),
-        contentType: 'application/json'
-    })
-    .done(handleSendSuccess);
-    // TODO: Handle errors
-}
-
-
 function handleSend(e) {
     e.preventDefault();
     if (!authorized()) {
         return;
     }
     var params = flattenForm($('#send-form'));
-    sendMessage(params.channelId, {
-        n: 10 * (1 + Math.sin(2 * Math.PI *
-                              ((new Date()).getTime() % 60000) / 60000.0)) / 2
-    });
+    var radians = 2 * Math.PI * ((new Date()).getTime() % 60000) / 60000.0;
+    sendMessage(
+        params.channelId,
+        {
+            n: 10 * (1 + Math.sin(radians)) / 2
+        },
+        AUTH_TOKEN,
+        handleSendSuccess);
 }
 
 

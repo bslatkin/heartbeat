@@ -30,7 +30,6 @@ function authorized() {
         return false;
     }
     var token = window.location.hash.substr(prefix.length);
-    console.log('Client authorized: ' + token);
     AUTH_TOKEN = token;
     return true;
 }
