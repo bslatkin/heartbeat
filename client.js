@@ -39,6 +39,25 @@ function getMessages(channelId) {
     })
     .done(function(result) {
         console.log(result);
+        var dataPoints = $('#data-points');
+        dataPoints.empty();
+        $.each(result.data, function(i, d) {
+            for (var i = 0, n = d.annotations.length; i < n; i++) {
+                var point = d.annotations[i];
+                if (point.type == 'net.app.contrib.timeseries') {
+                    $('<div class="point">')
+                        .append(
+                            $('<span class="stamp">')
+                                .text(d.created_at))
+                        .append(' ')
+                        .append(
+                            $('<span class="payload">')
+                                .text(JSON.stringify(point.value)))
+                        .appendTo(dataPoints);
+                    return;
+                }
+            }
+        });
     });
 }
 
@@ -69,7 +88,6 @@ function handleSend(e) {
         data: JSON.stringify({
             channel_id: params.channelId,
             created_at: (new Date()).toISOString(),  // requires ecma5
-            //id: '', // xxx is this for idempotent messages?
             machine_only: true,
             annotations: [
                 {
