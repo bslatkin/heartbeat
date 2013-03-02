@@ -124,6 +124,11 @@ function handleView(e) {
 
 
 function init() {
+    var prefix = '?channelId=';
+    if (window.location.search.indexOf(prefix) != -1) {
+        $('#channel-id').val(window.location.search.substr(prefix.length));
+    }
+
     $('#send-button').click(handleSend);
     $('#view-button').click(handleView);
 }

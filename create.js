@@ -16,7 +16,14 @@
 
 function handleCreateSuccess(result) {
     console.log(result);
-    $('#snippet').text('Created channel ID: ' + result.data.id);
+    var channelId = result.data.id;
+    $('#snippet')
+        .append($('<div>').text('Created channel ID: ' + channelId))
+        .append(
+            $('<a>')
+            .attr('href', 'client_demo.html?channelId=' + channelId)
+            .attr('target', '_blank')
+            .text('View client demo'));
 }
 
 
