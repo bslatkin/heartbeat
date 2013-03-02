@@ -13,27 +13,6 @@
  * limitations under the License.
  */
 
-var CLIENT_ID = 'Afwhh8J6d35WzUnVvSLPrc5KgY2aMhpy';
-var AUTH_TOKEN = '';
-
-
-function authorized() {
-    var prefix = '#access_token=';
-    if (window.location.hash.indexOf(prefix) != 0) {
-        var href = 'https://account.app.net/oauth/authenticate' +
-             '?client_id=' + CLIENT_ID +
-             '&response_type=token' +
-             '&redirect_uri=' + encodeURIComponent(window.location.href) +
-             '&scope=messages';
-        window.location.href = href;
-        return false;
-    }
-    var token = window.location.hash.substr(prefix.length);
-    console.log('Client authorized: ' + token);
-    AUTH_TOKEN = token;
-    return true;
-}
-
 
 function handleCreateSuccess(result) {
     console.log(result);
@@ -41,11 +20,12 @@ function handleCreateSuccess(result) {
 
 
 function handleCreate(e) {
+    e.preventDefault();
+
     if (!authorized()) {
         return;
     }
 
-    e.preventDefault();
     $.ajax({
         type: 'POST',
         url: 'https://alpha-api.app.net/stream/0/channels',

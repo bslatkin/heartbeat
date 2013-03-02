@@ -23,22 +23,53 @@ function flattenForm(formEl) {
 }
 
 
+function getMessages(channelId) {
+    console.log('Fetching channel: ' + channelId);
+    $.ajax({
+        type: 'GET',
+        url: 'https://alpha-api.app.net/stream/0/channels/' +
+             channelId + '/messages',
+        data: {
+            include_machine: 1,
+            include_annotations: 1,
+        },
+        headers: {
+            'Authorization': 'Bearer ' + AUTH_TOKEN
+        }
+    })
+    .done(function(result) {
+        console.log(result);
+    });
+}
+
+
 function handleSendSuccess(result) {
     console.log(result);
+    getMessages(result.data.channel_id);
 }
 
 
 function handleSend(e) {
     e.preventDefault();
+
+    if (!authorized()) {
+        return;
+    }
+
     var params = flattenForm(e.target);
     $.ajax({
         type: 'POST',
         url: 'https://alpha-api.app.net/stream/0/channels/' +
              params.channelId + '/messages',
+        // TODO: Remove the need for an auth token so we can have anonymous
+        // datapoints pushed through.
+        headers: {
+            'Authorization': 'Bearer ' + AUTH_TOKEN
+        },
         data: JSON.stringify({
             channel_id: params.channelId,
             created_at: (new Date()).toISOString(),  // requires ecma5
-            id: '', // xxx is this for idempotent messages?
+            //id: '', // xxx is this for idempotent messages?
             machine_only: true,
             annotations: [
                 {
