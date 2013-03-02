@@ -52,18 +52,19 @@ function handleCreate(e) {
     $.ajax({
         type: 'POST',
         url: 'https://alpha-api.app.net/stream/0/channels',
-        data: {
-            type: 'net.app.timeseries',
+        headers: {
+            'Authorization': 'Bearer ' + AUTH_TOKEN
+        },
+        data: JSON.stringify({
+            type: 'net.app.contrib.timeseries',
             writers: {
                 any_user: true
             },
             readers: {
                 you: true
             }
-        },
-        xhrFields: {
-            withCredentials: true
-        }
+        }),
+        contentType: 'application/json'
     }).done(function(result) {
         console.log(result);
     });
@@ -71,6 +72,7 @@ function handleCreate(e) {
 
 
 function init() {
+    AUTH_TOKEN = authorize();
     $('#create-form').submit(handleCreate);
 }
 
