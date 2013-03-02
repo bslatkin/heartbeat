@@ -1,1 +1,32 @@
 Timeseries monitoring API built on app.net
+
+
+Similar to https://github.com/etsy/statsd/ in how data points are reported.
+
+
+Time series format:
+{
+    n: 1234,           // The numerator of the data point
+    d: 3,              // The denominator of the data point
+    p: 10,             // The period, in seconds that the datapoint represents
+    v: {               // Multi-dimensional labels attached to the datapoint
+        key: value,    // Key/value pair of labels, string -> string
+        ...
+    },
+    c: 'hello',        // ID of the client that is the data source
+    s: 555,            // Sequence number of the message from the client (?)
+}
+
+
+About multi-dimensional labels:
+- This is how you can slice/dice/segment the data at read time. For example, say you're reporting timeseries data on website traffic. You could have {country: "US"} or {country: "UK"} as a set of labels. Then your graphing could let you show either of the different countries or together as a stacked chart.
+- You can go really deep with this if you use N labels, arbitrarily regrouping the data on a whole bunch of criteria. For example, say you are graphing exceptions. You could have {exception: "MyError", source: "client", "library": boostrap", customer_type: "Pro"} as a datapoint. You could roll up all exceptions. You could roll up all client-side exceptions. You could show all exceptions both client and server side that involved your paying Pro customers, etc.
+- Don't hurt yourself with too many dimensions!
+
+
+Pieces:
+- Owner: Create a new stream that you can read and everyone else can write
+- Browser writer: JS client for posting time series unauthorized to app.net; could include things like unhandled exceptions in JavaScript.
+- Server writer: Logging-tie for Python, etc, that pushes logging.exceptions up to the log stream
+- Server converter: Converts the time series into data that's readable by other services, like Graphite
+- Browser reader: JS client for reading time series data and presenting it as a rolled-up set of deltas
