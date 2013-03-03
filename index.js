@@ -15,7 +15,7 @@
 
 function init() {
     // Provisioned via create.html
-    var channelId = 6267;
+    var channelId = 6291;
 
     var clientId = 'rando' + Math.round(Math.random() * 1000000);
 

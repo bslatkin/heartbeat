@@ -1,0 +1,59 @@
+<!doctype>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Aggregator </title>
+        <script src="jquery-1.9.1.min.js"></script>
+        <script src="auth.js"></script>
+        <script src="client.js"></script>
+        <script src="aggregator.js"></script>
+    </head>
+<body>
+
+<h1>Aggregator test</h1>
+
+<script>
+function init() {
+    var data = [
+        {'kv':{'c':'rando464780','update':1},'n': 1},
+        {'kv':{'c':'rando464781','update':1},'n': 1},
+        {'kv':{'c':'rando464782','update':1},'n': 1},
+        {'kv':{'c':'rando464783','update':1},'n': 1},
+        {'kv':{'c':'rando464784','update':1},'n': 1},
+        {'kv':{'c':'rando464785','update':1},'n': 1},
+        {'kv':{'c':'rando464786','update':1},'n': 1},
+    ];
+    var bucket = new Bucket(1000);
+    $.each(data, function(i, x) {
+        bucket.add(JSON.parse(JSON.stringify(x)));
+    });
+    setTimeout(function() {
+        var result = bucket.query();
+        console.log('After 500ms! ' + result.length);
+        console.log(JSON.stringify(result));
+        $.each(data, function(i, x) {
+            bucket.add(JSON.parse(JSON.stringify(x)));
+        });
+        var result = bucket.query();
+        console.log('After 500ms! second ' + result.length);
+
+        setTimeout(function() {
+            var result = bucket.query();
+            console.log('After 1200ms! ' + result.length);
+            console.log(JSON.stringify(result));
+
+            setTimeout(function() {
+                var result = bucket.query();
+                console.log('After 1600ms! ' + result.length);
+                console.log(JSON.stringify(result));
+            }, 400);
+        }, 700);
+    }, 500);
+}
+
+
+$(document).ready(init);
+</script>
+
+</body>
+</html>
