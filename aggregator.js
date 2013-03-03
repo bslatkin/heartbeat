@@ -32,7 +32,7 @@ BucketView.prototype.count = function() {
 
 
 var Bucket = function(periodSeconds, tickCallback) {
-
+    this.points = [];
 };
 
 Bucket.prototype.addPoint = function(point) {
@@ -58,18 +58,18 @@ Bucket.prototype.start = function() {
 
 
 // TEST_DATA = [
-//     {"c":"rando464780","kv":{"leave":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
-//     {"c":"rando464780","kv":{"update":1},"n":1}
+//     {"kv":{"c":"rando464780","leave":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
+//     {"kv":{"c":"rando464780","update":1},"n":1}
 // ];
 
 
