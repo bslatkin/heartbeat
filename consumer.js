@@ -17,7 +17,9 @@
 var API_ROOT = 'https://alpha-api.app.net/stream/0'
 
 
-function pollChannel(channelId, callback) {
+function pollChannel(channelId, callback, since) {
+  since = since || 0
+
   $.ajax({
     type: 'GET',
     url: API_ROOT + '/channels/' + channelId + '/messages',
@@ -27,11 +29,18 @@ function pollChannel(channelId, callback) {
     data: {
       include_machine: 1,
       include_annotations: 1,
+      since_id: since
     }
   }).done(function (envelope) {
-    if (false !== callback(envelope)) {
+    var done = false
+
+    for (var i = 0 ; !done && i < envelope.data.length ; i++) {
+      var done = (false === callback(envelope.data[i]))
+    }
+
+    if (!done) {
       setTimeout(function () {
-        pollChannel(channelId, callback)
+        pollChannel(channelId, callback, envelope.meta.max_id || since)
       }, 1000)
     }
   })
@@ -120,12 +129,8 @@ function handleSubmit(e) {
   e.preventDefault()
   //AUTH_TOKEN = $(e.target).find('input[name=appToken]')[0].value
   channelId = $(e.target).find('input[name=channelId]')[0].value
-  pollChannel(channelId, function (envelope) {
-    if (envelope.data.length) {
-      console.log(envelope.data)
-    } else {
-      console.log("Ne messages")
-    }
+  pollChannel(channelId, function (message) {
+    console.log(message)
   })
 }
 
