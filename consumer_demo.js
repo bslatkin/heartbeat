@@ -12,13 +12,13 @@ var y = d3.scale.linear()
 
 function updateGraph(data) {
   var rect = d3.select('#graph').selectAll('rect')
-  .data(data, function (d) { return d.key })
+  .data(data, function (d) { return d.k })
 
   rect.enter().insert("rect", "line")
     .attr("x", function(d, i) { return x(i + 1) - .5; })
-    .attr("y", function(d) { return h - y(d.value) - .5; })
+    .attr("y", function(d) { return h - y(d.v) - .5; })
     .attr("width", w)
-    .attr("height", function(d) { return y(d.value); })
+    .attr("height", function(d) { return y(d.v); })
     .transition()
     .duration(1000)
     .attr("x", function(d, i) { return x(i) - .5; })
