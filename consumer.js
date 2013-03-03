@@ -18,23 +18,37 @@ var API_ROOT = 'https://alpha-api.app.net/stream/0'
 var AUTH_TOKEN = ''
 
 
-function consumeStream(endpoint, callback) {
-  console.log('Opening stream: ' + endpoint)
-  var xhr = $.ajax({
+function pollChannel(channelId, callback) {
+  $.ajax({
     type: 'GET',
-    url: endpoint,
-    data: {
-      include_machine: 1,
-      include_annotations: 1,
+    async: false,
+    url: API_ROOT + '/channels/' + channelId + '/messages',
+    headers: {
+      'Authorization': 'Bearer ' + AUTH_TOKEN,
+      'Content-Type': 'application/json'
     },
-    beforeSend: function (xhr, settings) {
-      var oldrsc = xhr.onreadystatechange
-      xhr.onreadystatechange = function () {
-
-        oldrsc.apply(this, arguments)
-      }
+  }).done(function (envelope) {
+    if (false !== callback(envelope)) {
+      setTimeout(function () {
+        pollChannel(channelId, callback)
+      }, 1000)
     }
   })
+}
+
+
+// XXX: app.net doesn't currently support CORS for the streaming API
+function consumeStream(endpoint, callback) {
+  console.log('Opening stream: ' + endpoint)
+  var xhr = new XMLHttpRequest()
+  xhr.onreadystatechange = function () {
+    console.log("State change " + xhr.readyState)
+    if (xhr.readyState == 3) {
+      console.log(xhr.responseText)
+    }
+  }
+  xhr.open("GET", endpoint)
+  xhr.send(null)
 }
 
 
@@ -49,25 +63,23 @@ function getStream(channelId, callback) {
     },
     data: {
       key: 'consumer-channel-' + channelId
-    },
-    statusCode: {
-      404: function () {
-        createStream(channelId, callback)
-      }
     }
   }).done(function (envelope) {
+    var endpoint = null
     if (envelope.data.length == 0) {
-      createStream(channelId, callback)
+      endpoint = createStream(channelId, callback)
     } else {
-      callback(envelope.data[0].endpoint)
+      endpoint = envelope.data[0].endpoint
     }
+    callback(endpoint)
   })
 }
 
 
 function createStream(channelId) {
-  $.ajax({
+  var xhr = $.ajax({
     type: 'POST',
+    async: false,
     url: API_ROOT + '/streams/',
     headers: {
       'Authorization': 'Bearer ' + AUTH_TOKEN,
@@ -91,11 +103,14 @@ function createStream(channelId) {
       key: 'consumer-channel-' + channelId
     })
   })
+  return JSON.parse(xhr.responseText).data.endpoint
 }
 
 
 function handleChunk(err, data) {
-  if (err) throw err
+  if (err) {
+    throw err
+  }
   console.log('data: ' + data)
 }
 
@@ -104,8 +119,8 @@ function handleSubmit(e) {
   e.preventDefault()
   AUTH_TOKEN = $(e.target).find('input[name=appToken]')[0].value
   channelId = $(e.target).find('input[name=channelId]')[0].value
-  getStream(channelId, function (endpoint) {
-    consumeStream(endpoint, handleChunk)
+  pollChannel(channelId, function (envelope) {
+    console.log(envelope)
   })
 }
 
