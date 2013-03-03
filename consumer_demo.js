@@ -1,7 +1,7 @@
 var BUCKET_WINDOW = 30000
 var UPDATE_INTERVAL = 1000
 
-var w = 20, h = 100
+var w = 20, h = 400
 var x = d3.scale.linear()
   .domain([0, 1])
   .range([0, w]);
