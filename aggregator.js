@@ -58,19 +58,12 @@ Bucket.prototype.start = function() {
 
 
 // TEST_DATA = [
-//     {"kv":{"c":"rando464780","leave":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
-//     {"kv":{"c":"rando464780","update":1},"n":1}
+//   {"c":"rando464780","leave":1,"_data":{"n": 1}}
+//   {"c":"rando464780","update":1,"_data":{"n": 1}}
 // ];
+
+
+{"c":"rando464780","leave":1,"__point":{"n": 1}}
 
 
 function init() {
