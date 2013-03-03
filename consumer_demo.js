@@ -1,7 +1,6 @@
 function handleSubmit(e) {
   e.preventDefault()
 
-
   var bucket = new Bucket(5000)
   , channelId = $(e.target).find('input[name=channelId]')[0].value
 
