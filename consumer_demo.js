@@ -1,4 +1,4 @@
-var BUCKET_WINDOW = 30000
+var BUCKET_WINDOW = 10000
 var UPDATE_INTERVAL = 1000
 
 var w = 20, h = 400
@@ -68,7 +68,7 @@ function handleSubmit(e) {
             v: count
           })
 
-          if (dataPoints.length > (BUCKET_WINDOW / UPDATE_INTERVAL)) {
+          if (dataPoints.length > 30) {
             dataPoints.shift()
           }
 
