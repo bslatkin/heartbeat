@@ -16,16 +16,16 @@
 var BUCKET_WINDOW = 10000
 var UPDATE_INTERVAL = 1000
 
-var w = 20, h = 400
-var x = d3.scale.linear()
-  .domain([0, 1])
-  .range([0, w]);
-var y = d3.scale.linear()
-  .domain([0, 20])
-  .rangeRound([0, h]);
-
-
 function updateGraph(data) {
+  var max = _.chain(data).pluck('v').max().value()
+  var w = 20, h = 400
+  var x = d3.scale.linear()
+    .domain([0, 1])
+    .range([0, w]);
+  var y = d3.scale.linear()
+    .domain([0, max])
+    .rangeRound([0, h]);
+
   var rect = d3.select('#graph').selectAll('rect')
   .data(data, function (d) { return d.k })
 
@@ -41,10 +41,15 @@ function updateGraph(data) {
   rect.transition()
     .duration(1000)
     .attr("x", function(d, i) { return x(i) - .5; })
+    .attr("y", function(d) { return h - y(d.v) - .5; })
+    .attr("height", function(d) { return y(d.v); })
 
   rect.exit().transition()
     .duration(1000)
     .attr("x", function(d, i) { return x(i - 1) - .5; })
+    .attr("y", function(d) { return h - y(d.v) - .5; })
+    .attr("height", function(d) { return y(d.v); })
+
     .remove()
 }
 
