@@ -20,17 +20,17 @@ function init() {
     var clientId = 'rando' + Math.round(Math.random() * 1000000);
 
     // Initial join message
-    sendMessage(channelId, {c: clientId, n: 1, kv: {join: 1}});
+    sendMessage(channelId, {n: 1, kv: {join: 1, c: clientId}});
 
     // Periodic heartbeat for this client
     setInterval(function() {
-        sendMessage(channelId, {c: clientId, n: 1, kv: {update: 1}});
+        sendMessage(channelId, {n: 1, kv: {update: 1, c: clientId}});
     }, 5000);
 
     // Send a death rattle message synchronously or else the browser will
     // definitely kill the AJAX request.
     $(window).unload(function() {
-        sendMessage(channelId, {c: clientId, n: 1, kv: {leave: 1}},
+        sendMessage(channelId, {n: 1, kv: {leave: 1, c: clientId}},
                     undefined, undefined, true);
     });
 }
