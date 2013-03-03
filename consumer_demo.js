@@ -60,7 +60,7 @@ function startListening(channelId) {
   , dataPoints = []
 
   pollChannel(channelId, function (message) {
-    console.log('Processing ' + message.annotations.length + ' annotations')
+    //console.log('Processing ' + message.annotations.length + ' annotations')
     //console.log(message)
     _.each(message.annotations, function (annotation) {
       //console.log(annotation.type)
