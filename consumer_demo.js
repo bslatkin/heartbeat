@@ -57,7 +57,9 @@ function handleSubmit(e) {
 
           var count = _.chain(bucket.query())
             .where({update: 1})
+            .filter(function (d) { return d.c !== undefined })
             .groupBy('c')
+            .keys()
             .value()
             .length
 
