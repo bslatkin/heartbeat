@@ -19,7 +19,7 @@ Time series format:
     v: {               // Multi-dimensional labels attached to the datapoint
         key: value,    // Key/value pair of labels, string -> string
         ...
-    },
+    }
 }
 
 Numerator is required. Everything else is optional.
