@@ -1,5 +1,9 @@
 Timeseries monitoring API built on app.net
 
+by
+Randall Leeds: http://bleeds.info
+Brett Slatkin: http://onebigfluke.com
+
 
 Similar to https://github.com/etsy/statsd/ in how data points are reported.
 
