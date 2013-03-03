@@ -1,0 +1,27 @@
+<!doctype>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Consumer demo</title>
+        <script src="jquery-1.9.1.min.js"></script>
+    </head>
+<body>
+
+<p>Graph the data points
+
+<form id="send-form">
+    <p>
+    <input type="text" name="appToken" size="40"
+           placeholder="Application Token">
+    <p>
+    <input type="text" name="channelId" size="40"
+           placeholder="ID of the channel to consume">
+    <p>
+    <input type="submit" value="Start">
+</form>
+
+<div id="data-points"></div>
+
+<script src="consumer.js"></script>
+</body>
+</html>
