@@ -4,6 +4,9 @@ by
 Randall Leeds: http://bleeds.info
 Brett Slatkin: http://onebigfluke.com
 
+Actual demo:
+http://bslatkin.github.com/heartbeat/
+
 
 Similar to https://github.com/etsy/statsd/ in how data points are reported.
 
