@@ -20,7 +20,6 @@ Time series format:
         key: value,    // Key/value pair of labels, string -> string
         ...
     },
-    c: 'hello',        // ID of the client that is the data source
 }
 
 Numerator is required. Everything else is optional.
