@@ -21,6 +21,7 @@ function init() {
 
     // Initial join message
     sendMessage(channelId, {n: 1, kv: {join: 1, c: clientId}});
+    sendMessage(channelId, {n: 1, kv: {update: 1, c: clientId}});
 
     // Periodic heartbeat for this client
     setInterval(function() {
