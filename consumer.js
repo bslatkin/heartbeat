@@ -115,32 +115,3 @@ function createStream(channelId) {
   })
   return JSON.parse(xhr.responseText).data.endpoint
 }
-
-
-function handleChunk(err, data) {
-  if (err) {
-    throw err
-  }
-  console.log('data: ' + data)
-}
-
-
-function handleSubmit(e) {
-  e.preventDefault()
-  //AUTH_TOKEN = $(e.target).find('input[name=appToken]')[0].value
-  channelId = $(e.target).find('input[name=channelId]')[0].value
-  pollChannel(channelId, function (message) {
-    console.log(message)
-  })
-}
-
-
-function init() {
-  if (!authorized()) {
-    return
-  }
-  $('#send-form').submit(handleSubmit)
-}
-
-
-$(document).ready(init)
