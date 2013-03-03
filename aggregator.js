@@ -27,7 +27,6 @@ Bucket.prototype.add = function(point) {
     point.kv['_created'] = (new Date()).getTime();
     this.points.push(point.kv);
     delete point.kv;  // Remove circular reference
-    console.log('Add - New state: ' + JSON.stringify(this.points));
 };
 
 Bucket.prototype.expire_ = function(now) {
@@ -41,7 +40,6 @@ Bucket.prototype.expire_ = function(now) {
         }
     }
     this.points = newPoints;
-    console.log('Expire - New state: ' + JSON.stringify(this.points));
 };
 
 Bucket.prototype.query = function() {
