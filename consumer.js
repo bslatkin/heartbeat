@@ -15,18 +15,19 @@
 
 
 var API_ROOT = 'https://alpha-api.app.net/stream/0'
-var AUTH_TOKEN = ''
 
 
 function pollChannel(channelId, callback) {
   $.ajax({
     type: 'GET',
-    async: false,
     url: API_ROOT + '/channels/' + channelId + '/messages',
     headers: {
-      'Authorization': 'Bearer ' + AUTH_TOKEN,
-      'Content-Type': 'application/json'
+      'Authorization': 'Bearer ' + AUTH_TOKEN
     },
+    data: {
+      include_machine: 1,
+      include_annotations: 1,
+    }
   }).done(function (envelope) {
     if (false !== callback(envelope)) {
       setTimeout(function () {
@@ -117,15 +118,22 @@ function handleChunk(err, data) {
 
 function handleSubmit(e) {
   e.preventDefault()
-  AUTH_TOKEN = $(e.target).find('input[name=appToken]')[0].value
+  //AUTH_TOKEN = $(e.target).find('input[name=appToken]')[0].value
   channelId = $(e.target).find('input[name=channelId]')[0].value
   pollChannel(channelId, function (envelope) {
-    console.log(envelope)
+    if (envelope.data.length) {
+      console.log(envelope.data)
+    } else {
+      console.log("Ne messages")
+    }
   })
 }
 
 
 function init() {
+  if (!authorized()) {
+    return
+  }
   $('#send-form').submit(handleSubmit)
 }
 
